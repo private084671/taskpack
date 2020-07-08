@@ -31,8 +31,20 @@ Private Function ExistsParentPath() As Boolean
 
 End Function
 
+Private Sub mkParentPath()
+
+    On Error GoTo FailedMkPath
+
+    Call MkDir(ParentPath)
+
+FailedMkPath:
+
+End Sub
+
 Private Sub Class_Initialize()
 
     Call GetParentPath
 
+    If Not ExistsParentPath Then Call mkParentPath
+    
 End Sub
