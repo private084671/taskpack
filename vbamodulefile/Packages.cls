@@ -9,20 +9,30 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-    Private PackagesPath As String
+    Private ParentPath As String
 
-Private Sub CreatePackagesPath()
+Private Sub GetParentPath()
 
-    Dim NetWork As Object
+    Dim UserName As String
     
-    Set NetWork = CreateObject("Wscript.NetWork")
+    UserName = WshNetwork.GetUserName
     
-    PackagesPath = "C:\Users\" & NetWork.UserName & "\TaskPack\Packages"
+    If UserName = "" Then Exit Sub 'UserName‚ªæ“¾‚Å‚«‚¸‰ö‚µ‚¢ƒpƒX‚ª¶¬‚³‚ê‚é‚Ì‚ğ–h~
+    
+    ParentPath = "C:\Users\" & UserName & "\TaskPack\Packages"
 
 End Sub
 
+Private Function ExistsParentPath() As Boolean
+
+    If Dir(ParentPath, vbDirectory) = "." Then Exit Function
+
+    If Dir(ParentPath, vbDirectory) <> "" Then ExistsParentPath = True
+
+End Function
+
 Private Sub Class_Initialize()
 
-    Call CreatePackagesPath
+    Call GetParentPath
 
 End Sub
